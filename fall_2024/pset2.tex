@@ -1,0 +1,117 @@
+\documentclass[12pt,answers]{exam}
+\usepackage{amsfonts, amsmath, amssymb, amsthm, fullpage, mathtools, tikz, enumitem}
+\linespread{1.2}
+\usepackage[ruled,vlined]{algorithm2e}
+
+\title{CSE 598, Fall 2024, Homework \#2}
+\date{}
+\author{Instructor: Zilin Jiang}
+
+\usepackage{tikz}
+\usetikzlibrary{quantikz}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{observation}[theorem]{Observation}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{fact}[theorem]{Fact}
+\newtheorem{assumption}[theorem]{Assumption}
+
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+\newtheorem*{example}{Example}
+
+%%%%%%%%%%% MACROS (ADD YOUR OWN BELOW) %%%%%%%%%
+\newcommand{\abs}[1]{\left\lvert #1 \right\rvert}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand{\inprod}[2]{\left\langle #1 \mid #2 \right\rangle}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\ip}[2]{\langle #1 | #2 \rangle}
+\newcommand{\ph}{\varphi}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\aal}{\abs{\alpha}^2}
+\newcommand{\bbe}{\abs{\beta}^2}
+\newcommand{\stdb}{\{\ket0,\ket1\}}
+\newcommand{\pmbs}{\{\ket+,\ket-\}}
+\newcommand{\buv}{\{\ket{u},\ket{v}\}}
+\newcommand{\bs}[2]{\{#1,#2\}}
+\newcommand{\tO}{\widetilde{O}}
+\newcommand{\cvec}[2]{\begin{bmatrix}#1 \\ #2\end{bmatrix}}
+\newcommand{\rvec}[2]{\begin{bmatrix}#1 & #2\end{bmatrix}}
+
+\begin{document}
+
+\maketitle
+
+\paragraph{Question 2(e)} Let $U' = \sum_{i} \ket{\phi_i}\bra{\psi_i}$. For every $j$, we have $U'\ket{\psi_j} = \sum_{i} \ket{\phi_i}\inprod{\psi_i}{\psi_j} = \ket{\phi_j}$. Thus $U$ and $U'$ agree on the $\psi$-basis, and so $U = U'$.
+
+\begin{remark}
+    One needs to mention that $U$ and $\sum_{i} \ket{\phi_i}\bra{\psi_i}$ are equal because they agree on a basis of $\C^d$.
+\end{remark}
+
+\paragraph{Question 3} Let $n$ be a large integer depending on $\eps$ to be chosen later. Set $\theta = \pi/(2n)$. The idea is to perform a series of $n$ measurements where the bases are
+$$
+  \bs{R_\theta\ket0}{R_\theta\ket1}, \bs{R_{2\theta}\ket0}{R_{2\theta}\ket1}, \dots, \bs{R_{n\theta}\ket0}{R_{n\theta}\ket1},
+$$
+where $R_?$ is the rotation transformation with a specific angle. After the first the measurement, we have the mixed state
+$$
+\begin{cases}
+  R_{\theta}\ket0 & \text{ with probability } \cos^2\theta;\\
+  R_\theta\ket1   & \text{ with probability } \sin^2\theta.
+\end{cases}
+$$
+
+Consider the mixed state after the second measurement. If the state is $R_{\theta}\ket0$ after the second measurement, then the mixed state after the second measurement is
+$$
+\begin{cases}
+  R_{2\theta}\ket0 & \text{ with probability } \cos^2\theta;\\
+  R_{2\theta}\ket1 & \text{ with probability } \sin^2\theta.
+\end{cases}
+$$
+If the state is $R_{\theta}\ket1$ after the second measurement, then the mixed state after the second measurement is
+$$
+\begin{cases}
+  R_{2\theta}\ket0 & \text{ with probability } \sin^2\theta;\\
+  R_{2\theta}\ket1 & \text{ with probability } \cos^2\theta.
+\end{cases}
+$$
+Compounding the probabilities, overall the mixed state after the second measurement is
+$$
+\begin{cases}
+  R_{2\theta}\ket0 & \text{ with probability } \cos^2\theta\cos^2\theta + \sin^2\theta\sin^2\theta;\\
+  R_{2\theta}\ket1 & \text{ with probability } 2\sin^2\theta\cos^2\theta.
+\end{cases}
+$$
+In particular, after the second measurement, the probability that the state is $R_{2\theta}\ket0$ is at least $\cos^4\theta$. Similarly, we can prove that after the $k$th measurement, the probability that the state is $R_{k\theta}\ket0$ is at least $\cos^{2k}\theta$. When $k = n$, the output state is $R_{n\theta}\ket{0} = \ket1$ with probability at least
+$$
+  \cos^{2n}\theta = \cos^{2n}\left(\frac{\pi}{2n}\right).
+$$
+Recall that $\cos\theta = 1 - 2\sin^2(\theta/2)$. Since $\theta = \pi/(2n) \in [0, \pi/2]$, and so $\sin(\theta/2) \in (0,\theta/2)$, we have
+$$
+  \cos\theta = 1 - 2\sin^2(\theta/2) > 1 - 2(\theta/2)^2,
+$$
+which implies that
+$$
+  \cos^{2n}\theta > \left(1-\frac{\theta^2}{2}\right)^n = \left(1-\frac{\pi^2}{8n^2}\right)^n.
+$$
+One can use standard tools from calculus to show that the last expression tends to $1$ as $n$ approaches infinity. Thus it is possible to choose $n$ large enough so that the probability of outputting $\ket1$ is at least $1 - \eps$.
+
+\begin{remark}
+  There is an adaptive strategy (which consists of several runs where each run might depend on previous ones). Measure in the $\pmbs$ basis and then measure in the $\stdb$ basis. The output is $\ket0$ and $\ket1$ equally likely. When the readout is $\ket1$, we output the qubit immediately. Otherwise, we repeat the process. Every iteration, we output $\ket1$ with probability $1/2$. As long as $2^{-n} < \eps$, up to $n$ iterations suffice.
+\end{remark}
+
+\paragraph{Question 6(b)} By applying a CNOT gate with the second qubit as the control, and then a Hadamard gate on the second qubit, one can work out that the output state will be transformed to on of the following:
+\[
+  \ket{00}, \ket{01}, \ket{10}, \ket{11}.
+\]
+Now Bob only need to measure in the standard basis to tell Alice's message.
+
+\begin{remark}
+    If the CNOT gate is applied with the first qubit as the control, and then a Hadamard gate on the first qubit, the output state will be $\ket{vu}$ rather than $\ket{uv}$.
+\end{remark}
+
+\end{document}

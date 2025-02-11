@@ -1,0 +1,79 @@
+\documentclass[12pt,answers]{exam}
+\usepackage{amsfonts, amsmath, amssymb, amsthm, fullpage, mathtools, tikz, enumitem}
+\linespread{1.2}
+\usepackage[ruled,vlined]{algorithm2e}
+
+\title{CSE 598, Fall 2024, Homework \#4}
+\date{}
+\author{Instructor: Zilin Jiang}
+
+\usepackage{tikz}
+\usetikzlibrary{quantikz}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{observation}[theorem]{Observation}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{fact}[theorem]{Fact}
+\newtheorem{assumption}[theorem]{Assumption}
+
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+\newtheorem*{example}{Example}
+
+%%%%%%%%%%% MACROS (ADD YOUR OWN BELOW) %%%%%%%%%
+\newcommand{\abs}[1]{\left\lvert #1 \right\rvert}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand{\inprod}[2]{\left\langle #1 \mid #2 \right\rangle}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\ip}[2]{\langle #1 | #2 \rangle}
+\newcommand{\ph}{\varphi}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\aal}{\abs{\alpha}^2}
+\newcommand{\bbe}{\abs{\beta}^2}
+\newcommand{\stdb}{\{\ket0,\ket1\}}
+\newcommand{\pmbs}{\{\ket+,\ket-\}}
+\newcommand{\buv}{\{\ket{u},\ket{v}\}}
+\newcommand{\bs}[2]{\{#1,#2\}}
+\newcommand{\tO}{\widetilde{O}}
+\newcommand{\cvec}[2]{\begin{bmatrix}#1 \\ #2\end{bmatrix}}
+\newcommand{\rvec}[2]{\begin{bmatrix}#1 & #2\end{bmatrix}}
+
+\begin{document}
+
+\maketitle
+
+\paragraph{Question 4(a)} When Alice flips T and Bob flips T, the joint state is:
+\begin{align*}
+  |\psi\rangle & = (H \otimes H)\left(\frac{1}{3} |00\rangle + \frac{1}{3} |01\rangle + \frac{1}{3} |10\rangle\right) \\
+  & = \frac13 |+\rangle \otimes |+\rangle + \frac13 |+\rangle \otimes |-\rangle + \frac13 |-\rangle \otimes |+\rangle \\
+  & = \frac{1}{6}\left( |00\rangle + |01\rangle + |10\rangle + |11\rangle \right) + \frac16 \left( |00\rangle - |01\rangle + |10\rangle - |11\rangle \right) + \frac16 \left( |00\rangle + |01\rangle - |10\rangle - |11\rangle \right) \\
+  & = \frac{1}{\sqrt{12}} \left( 3 |00\rangle + |01\rangle + |10\rangle - |11\rangle \right)
+\end{align*}
+Thus, it is possible for Alice and Bob to measure \( |11\rangle \).
+
+When Alice flips T and Bob flips H, since $H^2 = I$, the joint state is:
+\begin{align*}
+  (I \otimes H)\ket{\psi} & = (H \otimes I) \left(\frac{\sqrt2}{3}\ket+\otimes\ket0 + \frac13 \ket{01}\right) \\
+  & = \frac{\sqrt2}{3}\ket{00} + \frac{1}{3\sqrt2}\left(\ket{01} + \ket{11}\right)
+\end{align*}
+Thus, it is impossible to measure $\ket{10}$.
+
+When Alice flips H and Bob flips T, since $H^2 = I$, the joint state is:
+\begin{align*}
+  (H \otimes I)\ket\psi & = (I \otimes H)\left(\frac{\sqrt2}{3} \ket{0}\otimes\ket{+} + \frac13 \ket{10}\right) \\
+  & = \frac{\sqrt2}{3} \ket{00} + \frac{1}{3\sqrt2}\left(\ket{10} + \ket{11}\right)
+\end{align*}
+Thus, it is impossible to measure $\ket{01}$.
+
+When Alice flips H and Bob flips H, since $H^2 = I$, the joint state is:
+\begin{align*}
+  (H\otimes H)\ket\psi &= \frac13 \ket{00} + \frac13 \ket{01} + \frac13 \ket{10}
+\end{align*}
+Thus, it is impossible to measure $\ket{11}$.
+
+\end{document}
